@@ -11,7 +11,8 @@ import java.util.Random;
 import entity.Entity;
 import entity.Ghost;
 import entity.Pacman;
-import inputs.KeyboardInputs;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel implements ActionListener {
 
@@ -75,14 +76,14 @@ public class GamePanel extends JPanel implements ActionListener {
     private String[] tileMap2 = {
             "XXXXXXXXXXXXXXXXXXX",
             "XP      XOOOX     X",
-            "X XXXXX XOOOX XXY X",
-            "X XXXXX XXXXX XYX X",
-            "X             Y   X",
-            "X YYYYY XXX Y X Y O",
-            "X   Y   XXX Y X Y X",
-            "X X Y X     Y X Y X",
-            "X X Y X X X Y   Y X",
-            "X X Y X X X YYYYY X",
+            "X XXXXX XOOOX XXX X",
+            "X XXXXX XXXXX XXX X",
+            "X             X   X",
+            "X XXXXX XXX X X X O",
+            "X   X   XXX X X X X",
+            "X X X X     X X X X",
+            "X X X X X X X   X X",
+            "X X X X X X XXXXX X",
             "X     X X  opr    X",
             "X X X X XXX b X   X",
             "X X       X XXXXX X",
@@ -115,7 +116,16 @@ public class GamePanel extends JPanel implements ActionListener {
 
         loadMap();
 
-        this.addKeyListener(new KeyboardInputs(this));
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (gameOver && e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    resetGame();
+                } else if (!gameOver && pacman != null) {
+                    pacman.keyPressed(e);
+                }
+            }
+        });
         this.setFocusable(true);
         this.requestFocusInWindow();
 
